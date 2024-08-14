@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Molecule Visualization</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="moleculeCanvas" width="600" height="400"></canvas>
+    <script>
+        // Get the canvas element and its context
+        const canvas = document.getElementById('moleculeCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Number of molecules
+        const numMolecules = 12;
+
+        // Function to draw a single molecule
+        function drawMolecule(x, y) {
+            ctx.beginPath();
+            ctx.arc(x, y, 10, 0, 2 * Math.PI); // Draw a circle with radius 10
+            ctx.fillStyle = 'blue'; // Molecule color
+            ctx.fill();
+            ctx.strokeStyle = 'black';
+            ctx.stroke();
+        }
+
+        // Randomly position and draw molecules
+        function drawMolecules() {
+            for (let i = 0; i < numMolecules; i++) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                drawMolecule(x, y);
+            }
+        }
+
+        // Draw the molecules on the canvas
+        drawMolecules();
+    </script>
+</body>
+</html>

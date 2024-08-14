@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Calculation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: row;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        #container {
+            display: flex;
+            align-items: center;
+        }
+        #moleculeCanvas {
+            border: 1px solid black;
+        }
+        #info {
+            margin-left: 20px;
+            max-width: 300px;
+        }
+        #info h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div>
+            <canvas id="moleculeCanvas" width="600" height="400"></canvas>
+            <p id="temperature">Loading temperature...</p>
+        </div>
+        <div id="info">
+            <h2>Kinetic Theory of Gases</h2>
+            <p>
+                The kinetic theory of gases explains that gas pressure is due to collisions of gas molecules with the walls of the container.
+                The average kinetic energy of the molecules is related to the temperature of the gas. For a monatomic ideal gas, this relationship is given by:
+            </p>
+            <p>
+                <strong>Average Kinetic Energy</strong> = &frac{1}{2} m v²
+            </p>
+            <p>
+                <strong>Temperature Calculation:</strong><br>
+                T = &frac{2}{3} (Average Kinetic Energy / k<sub>B</sub>)
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Constants
+        const kB = 1.38e-23; // Boltzmann constant in J/K
+        const mass = 4e-27; // Mass of helium atom in kg
+        const numMolecules = 12; // Number of molecules
+
+        // Get the canvas element and its context
+        const canvas = document.getElementById('moleculeCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Function to draw a single molecule
+        function drawMolecule(x, y) {
+            ctx.beginPath();
+            ctx.arc(x, y, 10, 0, 2 * Math.PI); // Draw a circle with radius 10
+            ctx.fillStyle = 'blue'; // Molecule color
+            ctx.fill();
+            ctx.strokeStyle = 'black';
+            ctx.stroke();
+        }
+
+        // Randomly position and draw molecules
+        function drawMolecules() {
+            for (let i = 0; i < numMolecules; i++) {
+                const x = Math.random() * canvas.width;
+                const y = Math.random() * canvas.height;
+                drawMolecule(x, y);
+            }
+        }
+
+        // Generate random speeds for the molecules (in m/s)
+        function generateSpeeds(num) {
+            const speeds = [];
+            for (let i = 0; i < num; i++) {
+                speeds.push(Math.random() * 1000); // Random speed between 0 and 1000 m/s
+            }
+            return speeds;
+        }
+
+        // Calculate the average kinetic energy
+        function calculateAverageKineticEnergy(speeds, mass) {
+            let totalKineticEnergy = 0;
+            for (let speed of speeds) {
+                totalKineticEnergy += 0.5 * mass * speed * speed;
+            }
+            return totalKineticEnergy / speeds.length;
+        }
+
+        // Calculate the temperature
+        function calculateTemperature(averageKineticEnergy, kB) {
+            return (2 / 3) * (averageKineticEnergy / kB);
+        }
+
+        // Main function
+        function main() {
+            drawMolecules();
+
+            const speeds = generateSpeeds(numMolecules);
+            const averageKineticEnergy = calculateAverageKineticEnergy(speeds, mass);
+            const temperature = calculateTemperature(averageKineticEnergy, kB);
+
+            document.getElementById('temperature').textContent = `The temperature of the gas is approximately ${temperature.toFixed(2)} K.`;
+        }
+
+        main();
+    </script>
+</body>
+</html>

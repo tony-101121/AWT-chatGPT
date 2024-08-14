@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Calculation</title>
+</head>
+<body>
+    <h1>Gas Temperature Calculation</h1>
+    <p id="temperature"></p>
+
+    <script>
+        // Constants
+        const kB = 1.38e-23; // Boltzmann constant in J/K
+        const mass = 4e-27; // Mass of helium atom in kg
+        const numMolecules = 12; // Number of molecules
+
+        // Generate random speeds for the molecules (in m/s)
+        function generateSpeeds(num) {
+            const speeds = [];
+            for (let i = 0; i < num; i++) {
+                speeds.push(Math.random() * 1000); // Random speed between 0 and 1000 m/s
+            }
+            return speeds;
+        }
+
+        // Calculate the average kinetic energy
+        function calculateAverageKineticEnergy(speeds, mass) {
+            let totalKineticEnergy = 0;
+            for (let speed of speeds) {
+                totalKineticEnergy += 0.5 * mass * speed * speed;
+            }
+            return totalKineticEnergy / speeds.length;
+        }
+
+        // Calculate the temperature
+        function calculateTemperature(averageKineticEnergy, kB) {
+            return (2 / 3) * (averageKineticEnergy / kB);
+        }
+
+        // Main function
+        function main() {
+            const speeds = generateSpeeds(numMolecules);
+            const averageKineticEnergy = calculateAverageKineticEnergy(speeds, mass);
+            const temperature = calculateTemperature(averageKineticEnergy, kB);
+
+            document.getElementById('temperature').textContent = `The temperature of the gas is approximately ${temperature.toFixed(2)} K.`;
+        }
+
+        main();
+    </script>
+</body>
+</html>
